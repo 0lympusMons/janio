@@ -64,10 +64,7 @@ export default function HappyGreeting(date) {
   const SnappingHeartRef = useRef(null);
   const SNAP_RADIUS = 100;
   const heartPos = useRef({ x: 0, y: 0 });
-  const heartPosX = useMotionValue(0);
   const [snapCenter, setSnapCenter] = useState({ x: null, y: null });
-
-  const [animatePosition, setAnimatePosition] = useState(false);
 
   const calculateDistance = (x1, y1, x2, y2) => {
     return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
@@ -82,23 +79,10 @@ export default function HappyGreeting(date) {
       console.log(heartPos.current);
 
       if (distance < SNAP_RADIUS) {
-        // heartPos.current = { x: snapCenter.x, y: snapCenter.y };
-        console.log('snapppppppppppppppppppp');
         animate(HeartRef.current, { x: 0, y: snapCenter.y, translateY: '-50%' }, { duration: 1 });
-      } else {
-        // Otherwise, keep the current position
-        // setHeartPos({ x, y });
-        // heartPos.current = { x, y };
       }
     }, 2000);
   };
-
-  /* 
- get final position of the heart 
-  calculate distance between heart and radius
-  if within radius, animate to center
-  if not, remain to final position
-  */
 
   useLayoutEffect(() => {
     const rect = SnappingHeartRef.current.getBoundingClientRect();
@@ -110,25 +94,6 @@ export default function HappyGreeting(date) {
 
     console.log(snapCenter);
   }, [SnappingHeartRef.current]);
-
-  useLayoutEffect(() => {
-    console.log('chnaged');
-    const modalElement = HeartRef?.current;
-    if (modalElement) {
-      const coords = modalElement.style.transform.match(/^translateX\((.+)px\) translateY\((.+)px\) translateZ/);
-      if (coords?.length) {
-        console.log('coords', coords);
-
-        /* localStorage.setItem(
-          'lastModalCoords',
-          JSON.stringify({
-            x: parseInt(coords[1], 10),
-            y: parseInt(coords[2], 10),
-          })
-        ); */
-      }
-    }
-  }, []);
 
   return (
     <div className="flex h-full w-full items-center justify-center overflow-hidden bg-pink-900 px-2">
