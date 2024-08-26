@@ -18,7 +18,7 @@ export default function HappyGreeting(date) {
   };
 
   const seqeunceRef = useRef({});
-  const [activeSequence, setActiveSequence] = useState(3);
+  const [activeSequence, setActiveSequence] = useState(1);
 
   let pawsVariant = {
     hidden: {
@@ -52,8 +52,8 @@ export default function HappyGreeting(date) {
 
       return timeout;
     }
-
-    // let secondSeq = set(2, 10000);
+    // todo
+    let secondSeq = set(2, 10000);
     let thirdSeq = set(3, 15000);
   }, []);
 
@@ -73,145 +73,187 @@ export default function HappyGreeting(date) {
   const handleDragEnd = (event, info) => {
     console.log('info', info);
 
-    const snapToCenter = setTimeout(() => {
+    const snapToCenter = setTimeout(async () => {
       const { x, y } = info.point;
       const distance = calculateDistance(x, y, snapCenter.x, snapCenter.y);
       console.log(heartPos.current);
 
       if (distance < SNAP_RADIUS) {
-        animate(HeartRef.current, { x: 0, y: snapCenter.y, translateY: '-50%' }, { duration: 1 });
+        await animate(HeartRef.current, { x: 0, y: snapCenter.y, translateY: '-50%' }, { duration: 1 });
+        await animate(HeartRef.current, { scale: 100 }, { ease: 'easeInOut', duration: 2 });
+        await animate(SnappingHeartRef.current, { display: 'none' });
+
+        setActiveSequence(4);
       }
     }, 2000);
   };
 
   useLayoutEffect(() => {
-    const rect = SnappingHeartRef.current.getBoundingClientRect();
+    if (activeSequence === 3) {
+      const rect = SnappingHeartRef.current.getBoundingClientRect();
 
-    setSnapCenter({
-      x: rect.left + rect.width / 2 + window.scrollX,
-      y: rect.top + rect.height / 2 + window.scrollY,
-    });
+      setSnapCenter({
+        x: rect.left + rect.width / 2 + window.scrollX,
+        y: rect.top + rect.height / 2 + window.scrollY,
+      });
 
-    console.log(snapCenter);
-  }, [SnappingHeartRef.current]);
+      console.log(snapCenter);
+    }
+  }, [activeSequence, SnappingHeartRef.current]);
 
   return (
-    <div className="flex h-full w-full items-center justify-center overflow-hidden bg-pink-900 px-2">
+    <div className={`flex h-full w-full ${activeSequence != 3 ? 'px-2' : ''}`}>
       <AnimatePresence>
         {activeSequence == 1 ? (
-          <motion.div
-            ref={(el) => (seqeunceRef.current.first = el)}
-            className="flex flex-col items-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              position: 'fixed',
-              opacity: 0,
-            }}
-          >
-            <FadeInText transition={{ ease: 'easeInOut', delay: 1 }}>
-              <h1 className="text-2xfreal text-center font-cooper text-pink-50">{BirthdayMessage.first[0]}</h1>
-            </FadeInText>
-            <FadeInText transition={{ delay: 4 }}>
-              <p className="text-center font-serif text-pink-100">{BirthdayMessage.first[1]}</p>
-            </FadeInText>
-            <FadeInText transition={{ delay: 6 }}>
-              <p className="font-serif text-xs text-pink-100">{BirthdayMessage.first[2]}</p>
-            </FadeInText>
-          </motion.div>
+          <div className="flex h-dvh w-full items-center justify-center overflow-hidden">
+            <motion.div
+              ref={(el) => (seqeunceRef.current.first = el)}
+              className="flex flex-col items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{
+                position: 'fixed',
+                opacity: 0,
+              }}
+            >
+              <FadeInText transition={{ ease: 'easeInOut', delay: 1 }}>
+                <h1 className="text-2xfreal text-center font-cooper text-pink-50">{BirthdayMessage.first[0]}</h1>
+              </FadeInText>
+              <FadeInText transition={{ delay: 4 }}>
+                <p className="text-center font-serif text-pink-100">{BirthdayMessage.first[1]}</p>
+              </FadeInText>
+              <FadeInText transition={{ delay: 6 }}>
+                <p className="font-serif text-xs text-pink-100">{BirthdayMessage.first[2]}</p>
+              </FadeInText>
+            </motion.div>
+          </div>
         ) : null}
       </AnimatePresence>
 
       <AnimatePresence>
         {activeSequence == 2 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              position: 'fixed',
-
-              opacity: 0,
-            }}
-          >
+          <div className="flex h-dvh w-full items-center justify-center overflow-hidden">
             <motion.div
-              ref={(el) => (seqeunceRef.current.second = el)}
-              className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-between overflow-hidden"
-              variants={pawsVariant}
-              initial="hidden"
-              animate="show"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{
+                position: 'fixed',
+                opacity: 0,
+              }}
             >
-              <Paw
-                className={'mr-[20%]'}
-                variants={pawItemsVariant}
-                delay={1.25}
-              />
-              <Paw
-                className={'mr-[-20%]'}
-                variants={pawItemsVariant}
-                delay={1}
-              />
-              <Paw
-                className={'mr-[20%]'}
-                variants={pawItemsVariant}
-                delay={0.75}
-              />
+              <motion.div
+                ref={(el) => (seqeunceRef.current.second = el)}
+                className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-between overflow-hidden"
+                variants={pawsVariant}
+                initial="hidden"
+                animate="show"
+              >
+                <Paw
+                  className={'mr-[20%]'}
+                  variants={pawItemsVariant}
+                  delay={1.25}
+                />
+                <Paw
+                  className={'mr-[-20%]'}
+                  variants={pawItemsVariant}
+                  delay={1}
+                />
+                <Paw
+                  className={'mr-[20%]'}
+                  variants={pawItemsVariant}
+                  delay={0.75}
+                />
 
-              <Paw
-                className={'mr-[-20%]'}
-                variants={pawItemsVariant}
-                delay={0.5}
-              />
-              <Paw
-                className={'mr-[20%]'}
-                variants={pawItemsVariant}
-                delay={0.25}
-              />
-              <Paw
-                className={'mr-[-20%]'}
-                variants={pawItemsVariant}
-              />
+                <Paw
+                  className={'mr-[-20%]'}
+                  variants={pawItemsVariant}
+                  delay={0.5}
+                />
+                <Paw
+                  className={'mr-[20%]'}
+                  variants={pawItemsVariant}
+                  delay={0.25}
+                />
+                <Paw
+                  className={'mr-[-20%]'}
+                  variants={pawItemsVariant}
+                />
+              </motion.div>
+              <motion.h1
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, ease: 'anticipate' }}
+                className="text-center font-cooper text-2xl text-pink-50"
+              >
+                {BirthdayMessage.second}
+              </motion.h1>
             </motion.div>
-            <motion.h1
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5, ease: 'anticipate' }}
-              className="text-center font-cooper text-2xl text-pink-50"
+          </div>
+        ) : null}
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        {activeSequence == 3 ? (
+          <div className="flex h-dvh w-full items-center justify-center overflow-hidden">
+            <motion.div
+              className="flex h-full w-full flex-col"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ position: 'fixed', opacity: 0 }}
             >
-              {BirthdayMessage.second}
-            </motion.h1>
-          </motion.div>
+              <motion.div
+                className="relative flex w-full flex-1 justify-center"
+                ref={heartContainerRef}
+              >
+                <Heart
+                  ref={HeartRef}
+                  containerConstraint={heartContainerRef}
+                  SnappingHeartPosition={snapCenter}
+                  handleDragEnd={handleDragEnd}
+                  exit={{ opacity: 0, position: 'fixed' }}
+                />
+                <HeartSVG
+                  ref={SnappingHeartRef}
+                  className="absolute top-1/2 z-0 m-auto max-w-40 -translate-y-1/2 brightness-0 saturate-100"
+                  exit={{ opacity: 0, position: 'fixed' }}
+                />
+              </motion.div>
+              <h2 className="mx-auto mt-auto pb-4 font-serif tracking-wider text-pink-50">{BirthdayMessage.third}</h2>
+            </motion.div>
+          </div>
         ) : null}
       </AnimatePresence>
 
       <AnimatePresence>
-        {activeSequence == 3 ? (
-          <div className="flex h-full w-full flex-col">
-            <motion.div
-              className="relative flex w-full flex-1 justify-center"
-              ref={heartContainerRef}
-            >
-              <Heart
-                ref={HeartRef}
-                containerConstraint={heartContainerRef}
-                SnappingHeartPosition={snapCenter}
-                handleDragEnd={handleDragEnd}
+        {activeSequence == 4 ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="p-4"
+          >
+            <p className="mb-8 min-h-dvh px-4 font-serif leading-[170%] tracking-wide text-pink-50">
+              Forem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis
+              tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit
+              sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad
+              litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac
+              scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel
+              bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus.
+            </p>
+
+            <div className="flex h-screen flex-col items-center justify-center gap-6">
+              <h1 className="font-cooper text-[7vw] text-pink-50 sm:text-4xl">Island sunset with you</h1>
+              <img
+                src="/olango.png"
+                alt="Olango sunset"
+                className="rounded-3xl"
               />
-              <HeartSVG
-                ref={SnappingHeartRef}
-                className="absolute top-1/2 z-0 m-auto max-w-40 -translate-y-1/2 brightness-0 saturate-100"
-              />
-              {snapCenter.x ? (
-                <div
-                  className="absolute h-1 w-1 bg-pink-50"
-                  style={{
-                    left: `${snapCenter.x}px`,
-                    top: `${snapCenter.y}px`,
-                  }}
-                ></div>
-              ) : null}
-            </motion.div>
-            <h2 className="mx-auto mt-auto pb-4 font-serif tracking-wider text-pink-50">{BirthdayMessage.third}</h2>
-          </div>
+              <p className="font-serif leading-[170%] tracking-wide text-pink-50">
+                Corem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
+                aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+                himenaeos.
+              </p>
+            </div>
+          </motion.div>
         ) : null}
       </AnimatePresence>
     </div>
