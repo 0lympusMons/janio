@@ -103,18 +103,20 @@ export default function HappyGreeting(date) {
 
   return (
     <div className={`flex h-full w-full ${activeSequence != 3 ? 'px-2' : ''}`}>
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {activeSequence == 1 ? (
-          <div className="flex h-dvh w-full items-center justify-center overflow-hidden">
+          <motion.div
+            className="flex h-dvh w-full items-center justify-center overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              position: 'fixed',
+              opacity: 0,
+            }}
+          >
             <motion.div
               ref={(el) => (seqeunceRef.current.first = el)}
               className="flex flex-col items-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{
-                position: 'fixed',
-                opacity: 0,
-              }}
             >
               <FadeInText transition={{ ease: 'easeInOut', delay: 1 }}>
                 <h1 className="text-2xfreal text-center font-cooper text-pink-50">{BirthdayMessage.first[0]}</h1>
@@ -126,75 +128,74 @@ export default function HappyGreeting(date) {
                 <p className="font-serif text-xs text-pink-100">{BirthdayMessage.first[2]}</p>
               </FadeInText>
             </motion.div>
-          </div>
+          </motion.div>
         ) : null}
       </AnimatePresence>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {activeSequence == 2 ? (
-          <div className="flex h-dvh w-full items-center justify-center overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              position: 'fixed',
+              opacity: 0,
+            }}
+            className="flex h-dvh w-full items-center justify-center overflow-hidden"
+          >
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{
-                position: 'fixed',
-                opacity: 0,
-              }}
+              ref={(el) => (seqeunceRef.current.second = el)}
+              className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-between overflow-hidden"
+              variants={pawsVariant}
+              initial="hidden"
+              animate="show"
             >
-              <motion.div
-                ref={(el) => (seqeunceRef.current.second = el)}
-                className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-between overflow-hidden"
-                variants={pawsVariant}
-                initial="hidden"
-                animate="show"
-              >
-                <Paw
-                  className={'mr-[20%]'}
-                  variants={pawItemsVariant}
-                  delay={1.25}
-                />
-                <Paw
-                  className={'mr-[-20%]'}
-                  variants={pawItemsVariant}
-                  delay={1}
-                />
-                <Paw
-                  className={'mr-[20%]'}
-                  variants={pawItemsVariant}
-                  delay={0.75}
-                />
+              <Paw
+                className={'mr-[20%]'}
+                variants={pawItemsVariant}
+                delay={1.25}
+              />
+              <Paw
+                className={'mr-[-20%]'}
+                variants={pawItemsVariant}
+                delay={1}
+              />
+              <Paw
+                className={'mr-[20%]'}
+                variants={pawItemsVariant}
+                delay={0.75}
+              />
 
-                <Paw
-                  className={'mr-[-20%]'}
-                  variants={pawItemsVariant}
-                  delay={0.5}
-                />
-                <Paw
-                  className={'mr-[20%]'}
-                  variants={pawItemsVariant}
-                  delay={0.25}
-                />
-                <Paw
-                  className={'mr-[-20%]'}
-                  variants={pawItemsVariant}
-                />
-              </motion.div>
-              <motion.h1
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5, ease: 'anticipate' }}
-                className="text-center font-cooper text-2xl text-pink-50"
-              >
-                {BirthdayMessage.second}
-              </motion.h1>
+              <Paw
+                className={'mr-[-20%]'}
+                variants={pawItemsVariant}
+                delay={0.5}
+              />
+              <Paw
+                className={'mr-[20%]'}
+                variants={pawItemsVariant}
+                delay={0.25}
+              />
+              <Paw
+                className={'mr-[-20%]'}
+                variants={pawItemsVariant}
+              />
             </motion.div>
-          </div>
+            <motion.h1
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, ease: 'anticipate' }}
+              className="text-center font-cooper text-2xl text-pink-50"
+            >
+              {BirthdayMessage.second}
+            </motion.h1>
+          </motion.div>
         ) : null}
       </AnimatePresence>
 
       <AnimatePresence mode="wait">
         {activeSequence == 3 ? (
-          <div className="flex h-dvh w-full items-center justify-center overflow-hidden">
+          <motion.div className="flex h-dvh w-full items-center justify-center overflow-hidden">
             <motion.div
               className="flex h-full w-full flex-col"
               initial={{ opacity: 0 }}
@@ -220,7 +221,7 @@ export default function HappyGreeting(date) {
               </motion.div>
               <h2 className="mx-auto mt-auto pb-4 font-serif tracking-wider text-pink-50">{BirthdayMessage.third}</h2>
             </motion.div>
-          </div>
+          </motion.div>
         ) : null}
       </AnimatePresence>
 
