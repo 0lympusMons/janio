@@ -37,7 +37,7 @@ export default function HappyGreeting(date) {
 
   const seqeunceRef = useRef({});
   // todo manually control page here
-  const [activeSequence, setActiveSequence] = useState(3);
+  const [activeSequence, setActiveSequence] = useState(1);
 
   let pawsVariant = {
     hidden: {
@@ -76,8 +76,8 @@ export default function HappyGreeting(date) {
       return timeout;
     }
     // todo
-    // let secondSeq = set(2, 10000);
-    // let thirdSeq = set(3, 15000);
+    let secondSeq = set(2, 10000);
+    let thirdSeq = set(3, 15000);
   }, []);
 
   // * 3RD SEQUENCE, SNAPPING HEART
