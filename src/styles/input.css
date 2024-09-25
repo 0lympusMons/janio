@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "CooperBlack";
+    src: url("../../public/CooperBlack.TTF");
+}
+
+
+html, body {
+    @apply w-full h-full;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+#root {
+    min-height: 100dvh;
+}
+
+body {
+    @apply bg-pink-900
+}
+
+.progress-bar {
+    @apply fixed top-0 left-0 right-0;
+
+    height: 10px;
+    transform-origin: 0%;
+    @apply bg-jpink-700 z-50
+}
+
+.polka-img-grow {
+    animation-name: polka-grow;
+    animation-timing-function: steps(2);
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    transform: scale(.5);
+
+}
+
+@keyframes polka-grow {
+    from {
+        transform: scale(.5);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+
+.paws {
+    animation-timing-function: steps(2);
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.paws-left {
+    animation-name: paws-jiggle-left;
+}
+
+.paws-right {
+    animation-name: paws-jiggle-right;
+
+}
+
+@keyframes paws-jiggle-left {
+    from {
+
+        transform: rotate(-10deg);
+
+    }
+
+    to {
+        transform: rotate(20deg);
+    }
+}
+
+@keyframes paws-jiggle-right {
+    from {
+
+        transform: rotate(20deg);
+
+    }
+
+    to {
+        transform: rotate(-10deg);
+    }
+}
+
+.polka-img {
+
+    animation-timing-function: steps(2);
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+
+}
+
+.moviehaus {
+    animation-name: polka-jiggle-moviehaus;
+
+}
+
+.park {
+    animation-timing-function: steps(3);
+    animation-name: polka-jiggle;
+    animation-delay: 0.8s;
+    animation-direction: alternate;
+}
+
+.olango {
+    animation-timing-function: steps(2);
+    animation-name: polka-jiggle;
+    animation-delay: 0.8s;
+
+}
+
+.elevator {
+    @apply -translate-y-1/2 translate-x-1/4;
+    animation-timing-function: steps(2);
+    animation-name: polka-jiggle-elevator;
+    animation-delay: 0.8s;
+    animation-direction: alternate;
+}
+
+.sm {
+    animation-timing-function: steps(2);
+    animation-name: polka-jiggle;
+    animation-delay: .6s;
+    animation-direction: alternate;
+}
+
+
+@keyframes polka-jiggle-moviehaus {
+    from {
+        transform: translateX(-25%) translateY(-25%) rotate(-10deg);
+    }
+
+    to {
+        transform: translateX(-25%) translateY(-25%) rotate(20deg);
+    }
+}
+
+@keyframes polka-jiggle {
+    from {
+
+        transform: rotate(-10deg);
+
+    }
+
+    to {
+        transform: rotate(20deg);
+    }
+}
+
+@keyframes polka-jiggle-elevator {
+
+    from {
+
+        transform: translateX(25%) translateY(-50%) rotate(-10deg);
+
+    }
+
+    to {
+        transform: translateX(25%) translateY(-50%) rotate(20deg);
+    }
+}

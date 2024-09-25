@@ -17,6 +17,9 @@ import {
 import { sleep } from '../utils/HelperFunctions';
 import { Await } from 'react-router-dom';
 
+let introBeats = new Audio('/music/IntroBeats.mp3');
+let fullSong = new Audio('/music/FullSong.mp3');
+
 export default function HappyGreeting(date) {
   // if date is nov 19, anniverasary
   // if date is 19, monthsary
@@ -32,12 +35,9 @@ export default function HappyGreeting(date) {
 
   // * music
 
-  let introBeats = new Audio('/music/IntroBeats.mp3');
-  let fullSong = new Audio('/music/FullSong.mp3');
-
   const seqeunceRef = useRef({});
   // todo manually control page here
-  const [activeSequence, setActiveSequence] = useState(1);
+  const [activeSequence, setActiveSequence] = useState(3);
 
   let pawsVariant = {
     hidden: {
@@ -65,9 +65,9 @@ export default function HappyGreeting(date) {
 
   useEffect(() => {
     introBeats.loop = true;
-    introBeats.muted = 'muted';
+    introBeats.play();
 
-    introBeats.autoplay = true;
+    setTimeout(() => {}, 2000);
     function set(num, ms) {
       let timeout = setTimeout(() => {
         setActiveSequence(num);
@@ -76,8 +76,8 @@ export default function HappyGreeting(date) {
       return timeout;
     }
     // todo
-    let secondSeq = set(2, 10000);
-    let thirdSeq = set(3, 15000);
+    // let secondSeq = set(2, 10000);
+    // let thirdSeq = set(3, 15000);
   }, []);
 
   // * 3RD SEQUENCE, SNAPPING HEART
@@ -103,9 +103,9 @@ export default function HappyGreeting(date) {
       console.log(heartPos.current);
 
       if (distance < SNAP_RADIUS) {
-        introBeats.pause();
         enableDrag.set(false);
         await animate(HeartRef.current, { x: 0, y: snapCenter.y, translateY: '-50%' }, { duration: 1 });
+        introBeats.pause();
         fullSong.play();
         await animate(HeartRef.current, { scale: 100 }, { ease: 'easeInOut', duration: 3, delay: 0.5 });
         await animate(SnappingHeartRef.current, { display: 'none' });
@@ -337,7 +337,7 @@ function LongMessagePage() {
         <PictureMessage
           key={2}
           imgSrc={'/images/kingking.jpg'}
-          header={'First meetup with a fam'}
+          header={'First meetup with the fam'}
           p={'Wow ah. Ana pa’s Kingking ganahan siya nimo because you listen. True. You are a level 9999 listener.'}
         />
 
